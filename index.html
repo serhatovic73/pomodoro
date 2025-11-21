@@ -391,6 +391,8 @@
                 </ol>
             </div>
         </section>
+        <audio id="pomodoroSound" src="music/finish.mp3" preload="auto"></audio>
+
         <div class="space"></div>
         <footer class="text-center mt-5">
             <span class="block text-sm text-center text-gray-500">©2025 All Rights Reserved.
@@ -445,7 +447,6 @@
             document.getElementById('timer').textContent = `${minutes}:${seconds}`;
         }
 
-        //Ayarla(set) Buttonu
         document.getElementById('setBtn').onclick = () => {
             const value = Number(document.getElementById('minuteInput').value);
             if (value > 0) {
@@ -455,13 +456,10 @@
                 defaultTime = value * 60;
                 updateDisplay();
             } else {
-                alert("Please Give a Number")
+                alert("Please Give a Number");
             }
-
         };
 
-
-        //start buttonu
         document.getElementById('startBtn').onclick = () => {
             if (!timerInterval) {
                 timerInterval = setInterval(() => {
@@ -471,27 +469,35 @@
                     } else {
                         clearInterval(timerInterval);
                         timerInterval = null;
-                        alert('Finish!');
+                        playPomodoroSound();
                     }
                 }, 1000);
             }
         };
-        //Pause fonsksiyonu icin
+
         document.getElementById('pauseBtn').onclick = () => {
             clearInterval(timerInterval);
             timerInterval = null;
         };
 
-        //resetleme buttonu icin fonksiyon
         document.getElementById('resetBtn').onclick = () => {
             clearInterval(timerInterval);
             timerInterval = null;
             time = 25 * 60;
             updateDisplay();
         };
-        updateDisplay();
 
+        updateDisplay();
     </script>
+
+    <script>
+        function playPomodoroSound() {
+            const audio = document.getElementById("pomodoroSound");
+            audio.currentTime = 0;
+            audio.play();
+        }
+    </script>
+
     <script>
         const html = document.documentElement;
         const btn = document.getElementById("themeToggle");
