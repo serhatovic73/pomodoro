@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+        content="Boost your productivity with our free online Pomodoro timer. Set custom work intervals, take breaks, and stay focused while managing tasks effectively.">
+    <meta name="keywords"
+        content="Pomodoro, Pomodoro Timer, Productivity, Time Management, Focus, Online Timer, Task Management, Study Timer, Work Timer, Free Timer">
+    <meta name="author" content="Serhat Gicer">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="Pomodoro Timer – Free Online Productivity Tool">
+    <meta property="og:description"
+        content="Boost your productivity with our free online Pomodoro timer. Set custom intervals, track your tasks, and stay focused.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourdomain.com/">
+    <meta property="og:image" content="https://yourdomain.com/images/pomodoro-preview.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Pomodoro Timer – Free Online Productivity Tool">
+    <meta name="twitter:description"
+        content="Boost your productivity with our free online Pomodoro timer. Customize intervals, track tasks, and improve focus.">
+    <meta name="twitter:image" content="https://yourdomain.com/images/pomodoro-preview.png">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="icon" href="images/logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <style>
+        .pomodoro {
+            margin-top: 10%;
+        }
+
+        .space {
+            margin-top: 200px;
+        }
+
+        .bg-color {
+            color: #253900;
+            background-color: #BBE2EC !important;
+        }
+
+        .music-bg {
+            height: 400px;
+        }
+
+        .note {
+            position: absolute;
+            font-size: 24px;
+            color: #fff;
+            bottom: -30px;
+            animation: floatUp linear infinite;
+        }
+
+        /* Farklı başlangıç konumu ve hız */
+        .note:nth-child(1) {
+            left: 5%;
+            animation-duration: 6s;
+        }
+
+        .note:nth-child(2) {
+            left: 15%;
+            animation-duration: 7s;
+        }
+
+        .note:nth-child(3) {
+            left: 25%;
+            animation-duration: 5s;
+        }
+
+        .note:nth-child(4) {
+            left: 35%;
+            animation-duration: 8s;
+        }
+
+        .note:nth-child(5) {
+            left: 45%;
+            animation-duration: 6.5s;
+        }
+
+        .note:nth-child(6) {
+            left: 55%;
+            animation-duration: 7.5s;
+        }
+
+        .note:nth-child(7) {
+            left: 65%;
+            animation-duration: 6s;
+        }
+
+        .note:nth-child(8) {
+            left: 75%;
+            animation-duration: 5.5s;
+        }
+
+        .note:nth-child(9) {
+            left: 85%;
+            animation-duration: 8s;
+        }
+
+        .note:nth-child(10) {
+            left: 95%;
+            animation-duration: 7s;
+        }
+
+        @keyframes floatUp {
+            0% {
+                bottom: -30px;
+                opacity: 0;
+                transform: scale(0.5) rotate(0deg);
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                bottom: 100%;
+                opacity: 0;
+                transform: scale(1) rotate(360deg);
+            }
+        }
+    </style>
+    <title>Pomodoro</title>
+</head>
+
+<body class="bg-color flex items-center justify-center dark:bg-gray-300 dark:text-green">
+
+    <div class="container p-8 rounded-2xl shadow-2xl  text-center  dark:bg-white">
+
+        <header class="mb-5 rounded-2xl   shadow dark:bg-white  ">
+            <nav aria-label="Global" class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
+                <div class="flex lg:flex-1">
+                    <a href="index.html" class="text-3xl">
+                        <article id="exploding-characters">
+                            <h2 class="dark:text-black">Pomodoro</h2>
+                        </article>
+                    </a>
+                </div>
+                <!-- Toggle Button -->
+                <button id="themeToggle"
+                    class="mr-5 px-3 py-2 rounded-lg bg-indigo-600 text-white bg-blue dark:bg-gray-300 dark:text-green-700  ">
+                    <i class="bi bi-lightbulb"></i>
+                </button>
+
+
+                <div>
+                    <a href="mailto:serhatgicer49@gmail.com"
+                        class="text-xl font-semibold text-blue dark:text-black">Contact
+                        <span aria-hidden="true"></span></a>
+                </div>
+            </nav>
+        </header>
+
+        <div class="space"></div>
+        <div class="pomodoro flex flex-col md:flex-row justify-center gap-5 mx-auto  py-5 rounded-2xl">
+
+            <section>
+                <!--Sayac-->
+                <div id="timer" class="shadow font-mono   d-inline-block rounded-xl pt-4 p-3 h-60 dark:text-black "
+                    style="font-size: 110px;">
+                    25:00
+                </div>
+            </section>
+            <section class="my-auto">
+                <!--Dakkika giris alani-->
+                <div class="flex justify-center gap-3 dark:text-black  ">
+                    <input id="minuteInput" type="number" min="1" placeholder="Create Your Pomodoro"
+                        class=" px-3 py-2 rounded-md text-black w-30 border ">
+                    <button id="setBtn" class="px-4 py-2 bg-blue-700 text-white rounded-xl"><i
+                            class="bi bi-plus-circle"></i>
+                    </button>
+                </div>
+                <!--Buttonlar-->
+                <div class="flex justify-center gap-5 mt-5">
+
+                    <button id="startBtn" class="px-4 py-2 bg-blue-700 text-white rounded-xl "><i
+                            class="bi bi-play-fill"></i>
+                    </button>
+                    <button id="pauseBtn" class="px-4 py-2 bg-blue-700 text-white rounded-xl"><i
+                            class="bi bi-pause-circle"></i>
+                    </button>
+                    <button id="resetBtn" class=" px-4 py-2 bg-blue-700 text-white rounded-xl"> <i
+                            class="bi bi-arrow-clockwise"></i> </button>
+                </div>
+            </section>
+
+
+        </div>
+        <div class="space"></div>
+
+
+
+        <section class="flex flex-col  md:flex-row items-start gap-3">
+            <!-- Mini Notepad Section -->
+            <div class="notepad bg-white p-6 rounded-xl shadow-md w-96 flex flex-col gap-4">
+                <h3 class="text-xl font-semibold dark:text-black">Mini Notepad</h3>
+
+
+                <input type="text" id="noteTitle" placeholder="Title"
+                    class="w-full p-2 border border-gray-300 rounded-md outline-none text-black text-sm">
+                <input type="text" id="noteTopic" placeholder="Topic"
+                    class="w-full p-2 border border-gray-300 rounded-md outline-none text-black text-sm">
+                <textarea id="noteDescription" placeholder="Description..."
+                    class="w-full h-36 p-2 border border-gray-300 rounded-md resize-none  text-black outline-none text-sm"></textarea>
+
+
+                <div class="flex gap-2">
+                    <button id="btnSave"
+                        class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition">Save</button>
+                    <button id="btnClear"
+                        class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">Clear</button>
+                </div>
+            </div>
+
+
+            <div id="savedNotes" class="mt-5 flex flex-row flex-wrap gap-3 w-full text-start"></div>
+        </section>
+
+        <div class="space"></div>
+        <section class="to-do-list my-5 max-w-6xl flex m-auto">
+            <!-- To-Do List Section -->
+            <div class="todo bg-white p-4 rounded-xl shadow-md w-100 flex flex-col gap-4">
+                <h3 class="text-3xl dark:text-black  font-semibold ">To-Do List</h3>
+                <div class="flex gap-2">
+                    <input type="text" id="todoInput" placeholder="Add a task..."
+                        class="flex-1 text-black p-2 border border-gray-300 rounded-md outline-none text-sm">
+                    <button id="addTodo"
+                        class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">Add</button>
+                </div>
+                <ul id="todoList" class="mt-2 flex flex-col gap-2"></ul>
+            </div>
+        </section>
+        <div class="space"></div>
+
+
+
+        <section class="audio relative">
+            <div class="music-bg absolute inset-0 z-0 max-w-full flex justify-center items-center">
+                <div class="note">🎵</div>
+                <div class="note">🎶</div>
+                <div class="note">🎵</div>
+                <div class="note">🎶</div>
+                <div class="note">🎵</div>
+                <div class="note">🎶</div>
+                <div class="note">🎵</div>
+                <div class="note">🎶</div>
+                <div class="note">🎵</div>
+                <div class="note">🎶</div>
+            </div>
+            <div class="max-w-md mx-auto p-4 relative z-10 ">
+
+                <div class="bg-white shadow-md rounded-lg p-4 flex flex-col gap-4">
+
+                    <!-- ▼ Şarkı Seçimi -->
+                    <select id="songSelect" class="w-full p-2 border rounded text-sm">
+                        <option value="music/1.ogg">Music 1</option>
+                        <option value="music/2.ogg">Music 2</option>
+                        <option value="music/3.ogg">Music 3</option>
+                    </select>
+
+                    <!-- Başlık -->
+                    <div id="title" class="font-semibold text-sm">Music 1</div>
+
+                    <!-- Play Pause Button -->
+                    <button id="playPause"
+                        class="w-12 h-12 rounded-full bg-blue-500 hover:bg-blue-600 text-white flex items-center justify-center text-2xl mx-auto">
+                        <i id="iconPlay" class="bi bi-play-fill"></i>
+                        <i id="iconPause" class="bi bi-pause-fill hidden"></i>
+                    </button>
+
+                    <!-- Progress -->
+                    <div class="flex items-center gap-3">
+                        <div id="currentTime" class="text-xs w-12 text-right text-gray-600">0:00</div>
+
+                        <input id="progress" type="range" min="0" max="100" value="0"
+                            class="flex-1 h-1 bg-gray-200 rounded appearance-none">
+
+                        <div id="duration" class="text-xs w-12 text-left text-gray-600">0:00</div>
+                    </div>
+
+                    <!-- Volume -->
+                    <div class="flex items-center gap-3">
+                        <button id="muteBtn" class="px-2 py-1 rounded bg-gray-200 text-sm">🔊</button>
+                        <input id="volume" type="range" min="0" max="1" step="0.01" value="1"
+                            class="w-full h-1 bg-gray-200 rounded">
+                    </div>
+
+                    <!-- Audio -->
+                    <audio id="audio" preload="metadata">
+                        <source id="audioSource" src="music/1.ogg" type="audio/mpeg">
+                        <source id="audioSource" src="music/2.ogg" type="audio/mpeg">
+                        <source id="audioSource" src="music/3.ogg" type="audio/mpeg">
+
+                    </audio>
+
+                </div>
+
+            </div>
+
+        </section>
+        <div class="space"></div>
+        <section class="mt-4 ">
+            <div class=" p-8 rounded-2xl mb-12 text-left">
+
+                <!-- Hero Section -->
+                <h1 class="text-2xl text-center font-semibold mb-4 dark:text-black">
+                    Free Online Pomodoro Timer – Master Your Productivity
+                </h1>
+                <p class="text-lg text-left mb-12 dark:text-black">
+                    Focus and get more done with our free online Pomodoro timer. Simple, customizable, and perfect
+                    for
+                    managing your time effectively.
+                </p>
+            </div>
+            <!-- Pomodoro Technique Section -->
+            <div class=" p-8 rounded-2xl mb-12 text-left ">
+                <h2 class=" text-center text-xl font-semibold mb-4 dark:text-black">What is the Pomodoro
+                    Technique?</h2>
+                <p class="text-left mb-4 dark:text-black">
+                    The Pomodoro Technique involves breaking your work into 25-minute intervals (called
+                    "Pomodoros")
+                    followed by short breaks. This cycle helps maintain your focus and prevents mental fatigue,
+                    making it a favorite tool for students, professionals, and anyone aiming to work smarter.
+                </p>
+                <p class="text-left dark:text-black">
+                    This app is inspired by the Pomodoro Technique, a time management method developed by
+                    Francesco
+                    Cirillo to boost focus and productivity.
+                </p>
+            </div>
+
+            <!-- Why Use Section -->
+            <div class=" p-8 rounded-2xl mb-12 text-left  md:text-center dark:text-black">
+                <h2 class=" text-center text-xl font-semibold mb-4 dark:text-black">Why Use Our Pomodoro
+                    Timer?</h2>
+                <p class="text-left mb-4 dark:text-black">
+                    Our tool is designed for simplicity and efficiency:
+                </p>
+                <ul class="list-disc list-inside text-left space-y-2 dark:text-black">
+                    <li><strong>Free & Accessible:</strong> No downloads or sign-ups required. Start your
+                        Pomodoro
+                        sessions instantly!</li>
+                    <li><strong>Customizable Intervals:</strong> Adjust work and break periods according to your
+                        preferences.</li>
+                    <li><strong>User-Friendly Design:</strong> Clean and intuitive interface for a
+                        distraction-free
+                        experience.</li>
+                    <li><strong>Works Everywhere:</strong> Seamlessly use it on desktop, tablet, or mobile
+                        devices.
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Benefits Section -->
+            <div class=" p-8 rounded-2xl mb-12 text-left  md:text-center dark:text-black">
+                <h2 class=" text-center text-xl font-semibold mb-4 dark:text-black">Benefits of Using a
+                    Pomodoro Timer
+                </h2>
+                <ul class="list-disc list-inside text-left space-y-2 dark:text-black">
+                    <li><strong>Boost Focus:</strong> Helps you stay on task by eliminating distractions.</li>
+                    <li><strong>Enhance Time Management:</strong> Keeps your day structured and productive.</li>
+                    <li><strong>Improve Work-Life Balance:</strong> Encourages regular breaks, reducing burnout.
+                    </li>
+                </ul>
+            </div>
+
+            <!-- How to Use Section -->
+            <div class=" p-8 rounded-2xl text-left md:text-center dark:text-black">
+                <h2 class=" text-center text-xl font-semibold mb-4 dark:text-black">How to Use the
+                    Pomodoro Timer</h2>
+                <ol class="list-decimal list-inside text-left space-y-2 dark:text-black">
+                    <li>Set your desired work and break intervals.</li>
+                    <li>Click "Start" to begin your session.</li>
+                    <li>Focus on your task during the Pomodoro, then take a well-deserved break when the timer
+                        ends.
+                    </li>
+                </ol>
+            </div>
+        </section>
+        <div class="space"></div>
+        <footer class="text-center mt-5">
+            <span class="block text-sm text-center text-gray-500">©2025 All Rights Reserved.
+                Created By Serhat Gicer
+            </span>
+        </footer>
+    </div>
+
+
+    <script type="module">
+        import { animate, createScope, createTimeline, stagger, text, utils } from 'https://esm.sh/animejs';
+
+        createScope({ root: '#exploding-characters' }).add((scope) => {
+            const { root, methods } = scope;
+            const { chars } = text.split('h2', { chars: true });
+
+            scope.add('onEnter', () => {
+                createTimeline().add(chars, {
+                    x: { to: () => utils.random(-3, 3) + 'rem', duration: () => utils.random(150, 500) },
+                    y: () => utils.random(-5, 5) + 'rem',
+                    rotate: () => utils.random(-180, 180),
+                    duration: () => utils.random(200, 750),
+                    ease: 'outCirc',
+                    composition: 'blend',
+                }, stagger(5, { from: 'random' }));
+            });
+
+            scope.add('onLeave', () => {
+                createTimeline().add(chars, {
+                    x: { to: 0, delay: 75 },
+                    y: 0,
+                    duration: () => utils.random(200, 400),
+                    rotate: { to: 0, delay: 150, duration: () => utils.random(300, 400) },
+                    ease: 'inOut(2)',
+                    composition: 'blend',
+                }, stagger(10, { from: 'random' }));
+            });
+
+            root.addEventListener('pointerenter', methods.onEnter);
+            root.addEventListener('pointerleave', methods.onLeave);
+        });
+
+    </script>
+    <script>
+        let time = 25 * 60;
+        let defaultTime = 25 * 60;
+        let timerInterval;
+
+        function updateDisplay() {
+            const minutes = String(Math.floor(time / 60)).padStart(2, '0');
+            const seconds = String(time % 60).padStart(2, '0');
+            document.getElementById('timer').textContent = `${minutes}:${seconds}`;
+        }
+
+        //Ayarla(set) Buttonu
+        document.getElementById('setBtn').onclick = () => {
+            const value = Number(document.getElementById('minuteInput').value);
+            if (value > 0) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                time = value * 60;
+                defaultTime = value * 60;
+                updateDisplay();
+            } else {
+                alert("Please Give a Number")
+            }
+
+        };
+
+
+        //start buttonu
+        document.getElementById('startBtn').onclick = () => {
+            if (!timerInterval) {
+                timerInterval = setInterval(() => {
+                    if (time > 0) {
+                        time--;
+                        updateDisplay();
+                    } else {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                        alert('Finish!');
+                    }
+                }, 1000);
+            }
+        };
+        //Pause fonsksiyonu icin
+        document.getElementById('pauseBtn').onclick = () => {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        };
+
+        //resetleme buttonu icin fonksiyon
+        document.getElementById('resetBtn').onclick = () => {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            time = 25 * 60;
+            updateDisplay();
+        };
+        updateDisplay();
+
+    </script>
+    <script>
+        const html = document.documentElement;
+        const btn = document.getElementById("themeToggle");
+
+        btn.addEventListener("click", () => {
+            html.classList.toggle("dark");
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+
+    <script>
+        const audio = document.getElementById('audio');
+        const audioSource = document.getElementById('audioSource');
+        const songSelect = document.getElementById('songSelect');
+        const titleEl = document.getElementById('title');
+
+        const playPause = document.getElementById('playPause');
+        const iconPlay = document.getElementById('iconPlay');
+        const iconPause = document.getElementById('iconPause');
+        const progress = document.getElementById('progress');
+        const currentTime = document.getElementById('currentTime');
+        const duration = document.getElementById('duration');
+        const volume = document.getElementById('volume');
+        const muteBtn = document.getElementById('muteBtn');
+
+        function formatTime(sec) {
+            sec = Math.floor(sec || 0);
+            const m = Math.floor(sec / 60);
+            const s = sec % 60;
+            return m + ":" + (s < 10 ? "0" + s : s);
+        }
+
+        // Şarkı değişince
+        songSelect.addEventListener("change", () => {
+            const file = songSelect.value;
+
+            audioSource.src = file;
+            audio.load();
+            audio.play();
+
+            titleEl.textContent = songSelect.options[songSelect.selectedIndex].text;
+
+            iconPlay.classList.add("hidden");
+            iconPause.classList.remove("hidden");
+        });
+
+        audio.addEventListener("loadedmetadata", () => {
+            progress.max = audio.duration;
+            duration.textContent = formatTime(audio.duration);
+        });
+
+        // Play / Pause
+        playPause.addEventListener("click", () => {
+            audio.paused ? audio.play() : audio.pause();
+        });
+
+        audio.addEventListener("play", () => {
+            iconPlay.classList.add("hidden");
+            iconPause.classList.remove("hidden");
+        });
+
+        audio.addEventListener("pause", () => {
+            iconPlay.classList.remove("hidden");
+            iconPause.classList.add("hidden");
+        });
+
+        // Progress
+        audio.addEventListener("timeupdate", () => {
+            progress.value = audio.currentTime;
+            currentTime.textContent = formatTime(audio.currentTime);
+        });
+
+        progress.addEventListener("input", e => {
+            audio.currentTime = e.target.value;
+        });
+
+        // Volume
+        volume.addEventListener("input", e => {
+            audio.volume = e.target.value;
+            muteBtn.textContent = audio.volume == 0 ? "🔇" : "🔊";
+        });
+
+        muteBtn.addEventListener("click", () => {
+            audio.muted = !audio.muted;
+            muteBtn.textContent = audio.muted ? "🔇" : "🔊";
+        });
+    </script>
+    <script type="module" src="app.js"></script>
+    <script type="module" src="todolist.js"></script>
+</body>
+
+</html>
